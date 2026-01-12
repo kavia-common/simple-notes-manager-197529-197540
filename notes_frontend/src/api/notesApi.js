@@ -1,4 +1,20 @@
-const API_BASE_URL = 'http://localhost:3001/api/notes';
+/**
+ * API base URL resolution.
+ *
+ * Priority:
+ *  1) REACT_APP_API_BASE (full base for notes endpoints, e.g. "http://localhost:3001/api/notes")
+ *  2) REACT_APP_BACKEND_URL (backend origin, e.g. "http://localhost:3001")
+ *  3) Default local dev origin "http://localhost:3001"
+ *
+ * This keeps local dev working out-of-the-box while supporting environment wiring.
+ */
+const BACKEND_ORIGIN =
+  (process.env.REACT_APP_BACKEND_URL || '').trim() ||
+  'http://localhost:3001';
+
+const API_BASE_URL =
+  (process.env.REACT_APP_API_BASE || '').trim() ||
+  `${BACKEND_ORIGIN.replace(/\/$/, '')}/api/notes`;
 
 /**
  * Parse JSON from a fetch Response with a helpful error when non-2xx.
